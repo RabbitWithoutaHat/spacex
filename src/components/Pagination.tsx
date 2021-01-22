@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import Paging from "react-paginating"
@@ -30,14 +30,18 @@ const ActiveButton = styled(StyledButton)`
 `
 
 export const Pagination = () => {
-  const [currentPage, setCurrentPage] = useState(1)
   const dispatch = useDispatch()
   const total = useSelector((state: IState) => state.totalDocs)
+  const currentPage = useSelector(
+    (state: IState) => state.params?.options?.page
+  )
 
-  const onPageChange = useCallback((page?: number) => {
-    setCurrentPage(page || 1)
-    dispatch(changePagination(page || 1))
-  }, [dispatch])
+  const onPageChange = useCallback(
+    (page?: number) => {
+      dispatch(changePagination(page || 1))
+    },
+    [dispatch]
+  )
 
   return (
     <Wrapper>
