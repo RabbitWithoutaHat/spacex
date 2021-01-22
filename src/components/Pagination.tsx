@@ -8,7 +8,8 @@ import { IState } from "../types/types"
 const Wrapper = styled.div`
   display: flex;
   margin-top: 20px;
-  width: 500px;
+  max-width: 500px;
+  width: 100%;
   justify-content: flex-end;
 `
 

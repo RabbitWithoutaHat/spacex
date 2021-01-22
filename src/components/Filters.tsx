@@ -13,16 +13,20 @@ import { ILaunchpad, IRocket, IState, TFilterOption } from "../types/types"
 
 const FiltersWrapper = styled.div`
   display: flex;
-  flex-wrap: nowrap;
-  width: 500px;
-  height: 100px;
+  flex-wrap: wrap;
+  max-width: 500px;
+  width: 100%;
   justify-content: space-between;
+  margin-bottom: 20px;
 `
 const Label = styled.div`
   margin-bottom: 5px;
 `
+const FilterContainer = styled.div`
+  flex-basis: 45%;
+`
+
 const StyledDropdown = styled(Dropdown)`
-  width: 200px;
   font-size: 14px;
 `
 
@@ -64,24 +68,24 @@ export const Filters = () => {
 
   return (
     <FiltersWrapper>
-      <div>
+      <FilterContainer>
         <Label>Launchpad</Label>
         <StyledDropdown
           options={formattedLaunchpads}
-          placeholder="Select launchpad"
+          placeholder="All"
           data-name={"launchpad"}
           onChange={onChangeLaunchpad}
         />
-      </div>
-      <div>
+      </FilterContainer>
+      <FilterContainer>
         <Label>Rocket</Label>
         <StyledDropdown
           options={formattedRockets}
-          placeholder="Select rocket"
+          placeholder="All"
           data-name={"rocket"}
           onChange={onChangeRocket}
         />
-      </div>
+      </FilterContainer>
     </FiltersWrapper>
   )
 }
