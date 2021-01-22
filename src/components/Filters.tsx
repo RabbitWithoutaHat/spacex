@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Dropdown from "react-dropdown"
 import styled from "styled-components"
@@ -47,24 +47,34 @@ export const Filters = () => {
   const launchpads = useSelector((state: IState) => state.launchpads)
   const rockets = useSelector((state: IState) => state.rockets)
 
-  const formattedLaunchpads = formatOptions(launchpads || [])
-  const formattedRockets = formatOptions(rockets || [])
+  const formattedLaunchpads = useMemo(() => formatOptions(launchpads || []), [
+    launchpads,
+  ])
+  const formattedRockets = useMemo(() => formatOptions(rockets || []), [
+    rockets,
+  ])
 
   useEffect(() => {
     dispatch(getRockets)
     dispatch(getLaunchpads)
-  }, [])
+  }, [dispatch])
 
-  const onChangeLaunchpad = (option: TFilterOption) => {
-    if (option) {
-      dispatch(changeLaunchpadFilter(option.value))
-    }
-  }
-  const onChangeRocket = (option: TFilterOption) => {
-    if (option) {
-      dispatch(changeRocketFilter(option.value))
-    }
-  }
+  const onChangeLaunchpad = useCallback(
+    (option: TFilterOption) => {
+      if (option) {
+        dispatch(changeLaunchpadFilter(option.value))
+      }
+    },
+    [dispatch]
+  )
+  const onChangeRocket = useCallback(
+    (option: TFilterOption) => {
+      if (option) {
+        dispatch(changeRocketFilter(option.value))
+      }
+    },
+    [dispatch]
+  )
 
   return (
     <FiltersWrapper>

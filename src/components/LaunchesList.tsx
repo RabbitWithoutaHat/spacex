@@ -10,7 +10,7 @@ export const LaunchesList = () => {
 
   useEffect(() => {
     dispatch(getLaunches)
-  }, [])
+  }, [dispatch])
 
   return (
     <>
