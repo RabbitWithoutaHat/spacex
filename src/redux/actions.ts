@@ -18,14 +18,14 @@ import {
   SET_LAUNCHPAD_FILTER,
 } from "./types"
 
-const setLaunches = (data: ILaunch) => {
+const setLaunches = (data: ILaunch[]) => {
   return { type: SET_LAUNCHES, data }
 }
 
-const setRockets = (data: IRocket) => {
+const setRockets = (data: IRocket[]) => {
   return { type: SET_ROCKETS, data }
 }
-const setLaunchpads = (data: ILaunchpad) => {
+const setLaunchpads = (data: ILaunchpad[]) => {
   return { type: SET_LAUNCHPADS, data }
 }
 
@@ -88,7 +88,7 @@ const changePagination = (page: number) => (
 ) => {
   dispatch(setPagination(page))
   try {
-    dispatch(getLaunches as any)
+    dispatch(getLaunches)
   } catch (error) {
     if (!error.response) throw error
   }

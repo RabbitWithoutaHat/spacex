@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import {
   SET_PAGINATION,
   SET_TOTAL_DOCS,
@@ -10,7 +11,7 @@ const initialState = {
   params: { query: {}, optoions: {} },
 }
 
-export default function (state = initialState, action: any) {
+export default function (state = initialState, action: AnyAction) {
   switch (action.type) {
     case SET_PAGINATION: {
       return {

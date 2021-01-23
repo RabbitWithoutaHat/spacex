@@ -47,8 +47,10 @@ export type TFilterOption = { [name: string]: any }
 
 export interface IApi {
   api: {
-    getLaunches: (options: any) => Promise<AxiosResponse<any>>
-    getRockets: () => Promise<AxiosResponse<any>>
-    getLaunchpads: () => Promise<AxiosResponse<any>>
+    getLaunches: (
+      options?: IQueryParams
+    ) => Promise<AxiosResponse<{ docs: ILaunch[]; totalDocs: number }>>
+    getRockets: () => Promise<AxiosResponse<IRocket[]>>
+    getLaunchpads: () => Promise<AxiosResponse<ILaunchpad[]>>
   }
 }

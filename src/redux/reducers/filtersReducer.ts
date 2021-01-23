@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 import { SET_LAUNCHPADS, SET_ROCKETS } from "../types"
 
 const initialState = {
@@ -5,7 +6,7 @@ const initialState = {
   launchpads: undefined,
 }
 
-export default function (state = initialState, action: any) {
+export default function (state = initialState, action: AnyAction) {
   switch (action.type) {
     case SET_ROCKETS: {
       return {
