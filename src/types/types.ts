@@ -31,12 +31,16 @@ export interface IQueryParams {
   }
 }
 
-export interface IState {
-  data?: ILaunch[]
-  rockets?: IRocket[]
-  launchpads?: ILaunchpad[]
-  totalDocs: number
-  params?: IQueryParams
+export interface IDataState {
+  data: { launches?: ILaunch[] }
+}
+
+export interface IFiltersState {
+  filter: { rockets?: IRocket[]; launchpads?: ILaunchpad[] }
+}
+
+export interface IParamsState {
+  params: { totalDocs: number; params?: IQueryParams }
 }
 
 export type TFilterOption = { [name: string]: any }

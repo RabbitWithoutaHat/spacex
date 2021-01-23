@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import Paging from "react-paginating"
 import { changePagination } from "../redux/actions"
-import { IState } from "../types/types"
+import { IParamsState } from "../types/types"
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,9 +31,9 @@ const ActiveButton = styled(StyledButton)`
 
 export const Pagination = () => {
   const dispatch = useDispatch()
-  const total = useSelector((state: IState) => state.totalDocs)
+  const total = useSelector(({ params }: IParamsState) => params.totalDocs)
   const currentPage = useSelector(
-    (state: IState) => state.params?.options?.page
+    ({ params }: IParamsState) => params.params?.options?.page
   )
 
   const onPageChange = useCallback(

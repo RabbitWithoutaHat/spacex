@@ -9,7 +9,12 @@ import {
   getLaunchpads,
   getRockets,
 } from "../redux/actions"
-import { ILaunchpad, IRocket, IState, TFilterOption } from "../types/types"
+import {
+  ILaunchpad,
+  IRocket,
+  IFiltersState,
+  TFilterOption,
+} from "../types/types"
 
 const FiltersWrapper = styled.div`
   display: flex;
@@ -44,8 +49,10 @@ const formatOptions = (options: IRocket[] | ILaunchpad[]) => {
 
 export const Filters = () => {
   const dispatch = useDispatch()
-  const launchpads = useSelector((state: IState) => state.launchpads)
-  const rockets = useSelector((state: IState) => state.rockets)
+  const launchpads = useSelector(
+    ({ filter }: IFiltersState) => filter.launchpads
+  )
+  const rockets = useSelector(({ filter }: IFiltersState) => filter.rockets)
 
   const formattedLaunchpads = useMemo(() => formatOptions(launchpads || []), [
     launchpads,
@@ -67,6 +74,7 @@ export const Filters = () => {
     },
     [dispatch]
   )
+
   const onChangeRocket = useCallback(
     (option: TFilterOption) => {
       if (option) {
