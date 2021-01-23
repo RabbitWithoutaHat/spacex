@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios"
+
 export interface ILaunch {
   links: {
     patch: {
@@ -38,3 +40,11 @@ export interface IState {
 }
 
 export type TFilterOption = { [name: string]: any }
+
+export interface IApi {
+  api: {
+    getLaunches: (options: any) => Promise<AxiosResponse<any>>
+    getRockets: () => Promise<AxiosResponse<any>>
+    getLaunchpads: () => Promise<AxiosResponse<any>>
+  }
+}

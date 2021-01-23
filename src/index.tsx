@@ -5,8 +5,12 @@ import { Provider } from "react-redux"
 import thunk from "redux-thunk"
 import reducer from "./redux/reducer"
 import App from "./App"
+import { api } from "./api/api"
 
-const store = createStore(reducer, applyMiddleware(thunk))
+const store = createStore(
+  reducer,
+  applyMiddleware(thunk.withExtraArgument({ api }))
+)
 
 const rootElement = document.getElementById("root")
 ReactDOM.render(
