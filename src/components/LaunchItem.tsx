@@ -6,8 +6,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-grow: 1;
   flex-wrap: nowrap;
-  width: 500px;
-  height: 100px;
+  max-width: 500px;
+  width: 100%;
+  height: 106px;
   justify-content: space-between;
   padding: 7px 0;
 `
@@ -35,6 +36,7 @@ const Header = styled.div`
 `
 const Discription = styled.div`
   font-size: 12px;
+  overflow: hidden;
 `
 
 export const LaunchItem = (data: ILaunch) => {
@@ -54,10 +56,7 @@ export const LaunchItem = (data: ILaunch) => {
           <div>{name}</div>
           <div>{formattedDate}</div>
         </Header>
-        <Discription>
-          {details && details.slice(0, 280)}
-          {details && details.length && "..."}
-        </Discription>
+        <Discription>{details}</Discription>
       </Info>
     </Wrapper>
   )

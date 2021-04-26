@@ -1,8 +1,9 @@
 import React from "react"
+import styled from "styled-components"
 import { LaunchesList } from "./components/LaunchesList"
 import { Filters } from "./components/Filters"
-import styled from "styled-components"
 import { Pagination } from "./components/Pagination"
+import "./index.css"
 
 const AppWrapper = styled.div`
   display: flex;
@@ -10,6 +11,7 @@ const AppWrapper = styled.div`
   width: 100%;
   flex-direction: column;
   font-family: "Comfortaa", cursive;
+  padding: 0 15px 15px;
 `
 
 function App() {

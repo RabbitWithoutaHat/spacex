@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios"
+
 export interface ILaunch {
   links: {
     patch: {
@@ -29,12 +31,26 @@ export interface IQueryParams {
   }
 }
 
-export interface IState {
-  data?: ILaunch[]
-  rockets?: IRocket[]
-  launchpads?: ILaunchpad[]
-  totalDocs: number
-  params?: IQueryParams
+export interface IDataState {
+  data: { launches?: ILaunch[] }
+}
+
+export interface IFiltersState {
+  filter: { rockets?: IRocket[]; launchpads?: ILaunchpad[] }
+}
+
+export interface IParamsState {
+  params: { totalDocs: number; params?: IQueryParams }
 }
 
 export type TFilterOption = { [name: string]: any }
+
+export interface IApi {
+  api: {
+    getLaunches: (
+      options?: IQueryParams
+    ) => Promise<AxiosResponse<{ docs: ILaunch[]; totalDocs: number }>>
+    getRockets: () => Promise<AxiosResponse<IRocket[]>>
+    getLaunchpads: () => Promise<AxiosResponse<ILaunchpad[]>>
+  }
+}

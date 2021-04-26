@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Dropdown from "react-dropdown"
 import styled from "styled-components"
@@ -9,20 +9,29 @@ import {
   getLaunchpads,
   getRockets,
 } from "../redux/actions"
-import { ILaunchpad, IRocket, IState, TFilterOption } from "../types/types"
+import {
+  ILaunchpad,
+  IRocket,
+  IFiltersState,
+  TFilterOption,
+} from "../types/types"
 
 const FiltersWrapper = styled.div`
   display: flex;
-  flex-wrap: nowrap;
-  width: 500px;
-  height: 100px;
+  flex-wrap: wrap;
+  max-width: 500px;
+  width: 100%;
   justify-content: space-between;
+  margin-bottom: 20px;
 `
 const Label = styled.div`
   margin-bottom: 5px;
 `
+const FilterContainer = styled.div`
+  flex-basis: 45%;
+`
+
 const StyledDropdown = styled(Dropdown)`
-  width: 200px;
   font-size: 14px;
 `
 
@@ -40,48 +49,61 @@ const formatOptions = (options: IRocket[] | ILaunchpad[]) => {
 
 export const Filters = () => {
   const dispatch = useDispatch()
-  const launchpads = useSelector((state: IState) => state.launchpads)
-  const rockets = useSelector((state: IState) => state.rockets)
+  const launchpads = useSelector(
+    ({ filter }: IFiltersState) => filter.launchpads
+  )
+  const rockets = useSelector(({ filter }: IFiltersState) => filter.rockets)
 
-  const formattedLaunchpads = formatOptions(launchpads || [])
-  const formattedRockets = formatOptions(rockets || [])
+  const formattedLaunchpads = useMemo(() => formatOptions(launchpads || []), [
+    launchpads,
+  ])
+  const formattedRockets = useMemo(() => formatOptions(rockets || []), [
+    rockets,
+  ])
 
   useEffect(() => {
     dispatch(getRockets)
     dispatch(getLaunchpads)
-  }, [])
+  }, [dispatch])
 
-  const onChangeLaunchpad = (option: TFilterOption) => {
-    if (option) {
-      dispatch(changeLaunchpadFilter(option.value))
-    }
-  }
-  const onChangeRocket = (option: TFilterOption) => {
-    if (option) {
-      dispatch(changeRocketFilter(option.value))
-    }
-  }
+  const onChangeLaunchpad = useCallback(
+    (option: TFilterOption) => {
+      if (option) {
+        dispatch(changeLaunchpadFilter(option.value))
+      }
+    },
+    [dispatch]
+  )
+
+  const onChangeRocket = useCallback(
+    (option: TFilterOption) => {
+      if (option) {
+        dispatch(changeRocketFilter(option.value))
+      }
+    },
+    [dispatch]
+  )
 
   return (
     <FiltersWrapper>
-      <div>
+      <FilterContainer>
         <Label>Launchpad</Label>
         <StyledDropdown
           options={formattedLaunchpads}
-          placeholder="Select launchpad"
+          placeholder="All"
           data-name={"launchpad"}
           onChange={onChangeLaunchpad}
         />
-      </div>
-      <div>
+      </FilterContainer>
+      <FilterContainer>
         <Label>Rocket</Label>
         <StyledDropdown
           options={formattedRockets}
-          placeholder="Select rocket"
+          placeholder="All"
           data-name={"rocket"}
           onChange={onChangeRocket}
         />
-      </div>
+      </FilterContainer>
     </FiltersWrapper>
   )
 }

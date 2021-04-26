@@ -1,7 +1,13 @@
 import { Dispatch, AnyAction } from "redux"
 import { ThunkDispatch } from "redux-thunk"
-import { api } from "../api/api"
-import { ILaunch, ILaunchpad, IRocket, IState } from "../types/types"
+import {
+  ILaunch,
+  ILaunchpad,
+  IRocket,
+  IFiltersState,
+  IParamsState,
+  IApi,
+} from "../types/types"
 import {
   SET_LAUNCHES,
   SET_ROCKETS,
@@ -12,14 +18,14 @@ import {
   SET_LAUNCHPAD_FILTER,
 } from "./types"
 
-const setLaunches = (data: ILaunch) => {
+const setLaunches = (data: ILaunch[]) => {
   return { type: SET_LAUNCHES, data }
 }
 
-const setRockets = (data: IRocket) => {
+const setRockets = (data: IRocket[]) => {
   return { type: SET_ROCKETS, data }
 }
-const setLaunchpads = (data: ILaunchpad) => {
+const setLaunchpads = (data: ILaunchpad[]) => {
   return { type: SET_LAUNCHPADS, data }
 }
 
@@ -37,9 +43,13 @@ const setLaunchpadFilter = (data: string) => {
   return { type: SET_LAUNCHPAD_FILTER, data }
 }
 
-const getLaunches = async (dispatch: Dispatch, getState: () => IState) => {
+const getLaunches = async (
+  dispatch: Dispatch,
+  getState: () => IParamsState,
+  { api }: IApi
+) => {
   try {
-    const { data } = await api.getLaunches(getState().params)
+    const { data } = await api.getLaunches(getState().params.params)
     dispatch(setLaunches(data.docs))
     dispatch(setTotalDocs(data.totalDocs))
   } catch (error) {
@@ -47,7 +57,11 @@ const getLaunches = async (dispatch: Dispatch, getState: () => IState) => {
   }
 }
 
-const getRockets = async (dispatch: Dispatch) => {
+const getRockets = async (
+  dispatch: Dispatch,
+  getState: () => IFiltersState,
+  { api }: IApi
+) => {
   try {
     const { data } = await api.getRockets()
     dispatch(setRockets(data))
@@ -56,7 +70,11 @@ const getRockets = async (dispatch: Dispatch) => {
   }
 }
 
-const getLaunchpads = async (dispatch: Dispatch) => {
+const getLaunchpads = async (
+  dispatch: Dispatch,
+  getState: () => IFiltersState,
+  { api }: IApi
+) => {
   try {
     const { data } = await api.getLaunchpads()
     dispatch(setLaunchpads(data))
@@ -66,7 +84,7 @@ const getLaunchpads = async (dispatch: Dispatch) => {
 }
 
 const changePagination = (page: number) => (
-  dispatch: ThunkDispatch<IState, {}, AnyAction>
+  dispatch: ThunkDispatch<IParamsState, IApi, AnyAction>
 ) => {
   dispatch(setPagination(page))
   try {
@@ -77,7 +95,7 @@ const changePagination = (page: number) => (
 }
 
 const changeLaunchpadFilter = (launchpad: string) => (
-  dispatch: ThunkDispatch<IState, {}, AnyAction>
+  dispatch: ThunkDispatch<IParamsState, IApi, AnyAction>
 ) => {
   try {
     dispatch(setLaunchpadFilter(launchpad))
@@ -88,7 +106,7 @@ const changeLaunchpadFilter = (launchpad: string) => (
 }
 
 const changeRocketFilter = (rocket: string) => (
-  dispatch: ThunkDispatch<IState, {}, AnyAction>
+  dispatch: ThunkDispatch<IParamsState, IApi, AnyAction>
 ) => {
   try {
     dispatch(setRocketFilter(rocket))
